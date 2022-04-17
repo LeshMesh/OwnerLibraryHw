@@ -1,0 +1,43 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    testImplementation(
+            "org.junit.jupiter:junit-jupiter:5.8.2",
+            "io.rest-assured:rest-assured:5.0.1",
+            "com.codeborne:selenide:6.4.0",
+            "org.aeonbits.owner:owner:1.0.12",
+            "com.codeborne:selenide:6.3.4",
+            "org.assertj:assertj-core:3.22.0")
+    testRuntimeOnly(
+            "org.slf4j:slf4j-simple:1.7.36",
+            "org.junit.jupiter:junit-jupiter-engine:5.8.2")
+}
+
+tasks.withType(Test) {
+    systemProperties(System.getProperties())
+    useJUnitPlatform()
+
+    testLogging {
+        lifecycle {
+//            events "started", "failed"
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+}
